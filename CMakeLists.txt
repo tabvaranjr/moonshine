@@ -40,6 +40,6 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED YES)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-set(SOURCE_FILES main.cpp)
+set(SOURCE_FILES src/main.cpp)
 add_executable(moonshine ${SOURCE_FILES})
 target_link_libraries(moonshine ${GLFW_LIBRARIES} ${OPENGL_LIBRARIES} ${LibEpoxy_LIBRARIES})
