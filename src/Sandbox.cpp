@@ -5,10 +5,17 @@
 #include <fmt/format.h>
 #include <stdexcept>
 
+auto APPLICATION_NAME = "Moonshine";
+
 namespace Moonshine
 {
 
 Sandbox::Sandbox() :
+    Sandbox(Parameters())
+{
+}
+
+Sandbox::Sandbox(Parameters p) :
     window(nullptr)
 {
     glfwSetErrorCallback([](int error, const char* description) { fmt::print("Error {0:#x}: {1}\n", error, description); } );
@@ -18,12 +25,33 @@ Sandbox::Sandbox() :
         throw std::runtime_error("Failed to initialize GLFW");
     }
 
+    if (p.IsDebugModeActive)
+    {
+        glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
+    }
+
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    window = glfwCreateWindow(800, 800, "Moonshine", nullptr, nullptr);
+    if (p.IsFullScreen)
+    {
+        auto monitor = glfwGetPrimaryMonitor();
+        auto mode = glfwGetVideoMode(monitor);
+
+        glfwWindowHint(GLFW_RED_BITS, mode->redBits);
+        glfwWindowHint(GLFW_GREEN_BITS, mode->greenBits);
+        glfwWindowHint(GLFW_BLUE_BITS, mode->blueBits);
+        glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
+
+        window = glfwCreateWindow(mode->width, mode->height, APPLICATION_NAME, monitor, nullptr);
+    }
+    else
+    {
+        window = glfwCreateWindow(p.Width, p.Height, APPLICATION_NAME, nullptr, nullptr);
+    }
+
     if (window == nullptr)
     {
         glfwTerminate();

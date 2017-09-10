@@ -9,7 +9,16 @@ namespace Moonshine
 class Sandbox
 {
 public:
+    struct Parameters
+    {
+        unsigned int Width = 800;
+        unsigned int Height = 600;
+        bool IsDebugModeActive = true;
+        bool IsFullScreen = false;
+    };
+
     Sandbox();
+    explicit Sandbox(Parameters p);
     ~Sandbox();
 
 private:
