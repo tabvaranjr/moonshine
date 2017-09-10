@@ -18,7 +18,7 @@ Sandbox::Sandbox() :
 Sandbox::Sandbox(Parameters p) :
     window(nullptr)
 {
-    glfwSetErrorCallback([](int error, const char* description) { fmt::print("Error {0:#x}: {1}\n", error, description); } );
+    glfwSetErrorCallback([](auto error, auto description) { fmt::print("Error {0:#x}: {1}\n", error, description); } );
 
     if (!glfwInit())
     {
@@ -65,7 +65,7 @@ Sandbox::Sandbox(Parameters p) :
     fmt::print("Renderer: {0}\n", glGetString(GL_RENDERER));
     fmt::print("Version: {0}\n", glGetString(GL_VERSION));
 
-    glfwSetKeyCallback(window, [](GLFWwindow* window, int key, int scancode, int action, int mods)
+    glfwSetKeyCallback(window, [](auto window, auto key, auto scancode, auto action, auto mods)
     {
         if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
         {
