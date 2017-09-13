@@ -1,6 +1,8 @@
 #ifndef MOONSHINE_SANDBOX_H
 #define MOONSHINE_SANDBOX_H
 
+#include <functional>
+
 class GLFWwindow;
 
 namespace Moonshine
@@ -21,8 +23,18 @@ public:
     explicit Sandbox(Parameters p);
     ~Sandbox();
 
+    void run() const;
+
+    void stop() const;
+
+    void setWindowSizeCallback(std::function<void(int, int)> callback);
+
+    void setKeyCallback(std::function<void(int, int, int, int)> callback);
+
+    void setMouseButtonCallback(std::function<void(int, int, int)> callback);
+
 private:
-    GLFWwindow* window;
+    GLFWwindow* _window;
 };
 
 }

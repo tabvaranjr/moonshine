@@ -8,6 +8,22 @@ int main(int argc, char* argv[])
     try
     {
         Moonshine::Sandbox box;
+
+        box.setWindowSizeCallback([](int width, int height)
+                                  {
+                                      fmt::print("{0}x{1}\n", width, height);
+                                  });
+
+        auto keyCallback = [&box](auto key, auto scancode, auto action, auto mods)
+        {
+            if (key == 256 && action == 1)
+            {
+                box.stop();
+            }
+        };
+        box.setKeyCallback(keyCallback);
+
+        box.run();
     }
     catch (std::exception& e)
     {

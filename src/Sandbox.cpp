@@ -5,10 +5,22 @@
 #include <fmt/format.h>
 #include <stdexcept>
 
-auto APPLICATION_NAME = "Moonshine";
+#include <map>
 
 namespace Moonshine
 {
+
+auto APPLICATION_NAME = "Moonshine";
+
+static std::map<GLFWwindow*, std::function<void(int, int)>> sWindowSizeCallbackMap;
+static std::map<GLFWwindow*, std::function<void(int, int, int)>> sMouseButtonCallbackMap;
+static std::map<GLFWwindow*, std::function<void(int, int, int, int)>> sKeyCallbackMap;
+
+void InternalWindowSizeCallback(GLFWwindow* window, int width, int height);
+
+void InternalKeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
+
+void InternalMouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
 
 Sandbox::Sandbox() :
     Sandbox(Parameters())
@@ -16,7 +28,7 @@ Sandbox::Sandbox() :
 }
 
 Sandbox::Sandbox(Parameters p) :
-    window(nullptr)
+        _window(nullptr)
 {
     glfwSetErrorCallback([](auto error, auto description) { fmt::print("Error {0:#x}: {1}\n", error, description); } );
 
@@ -45,37 +57,42 @@ Sandbox::Sandbox(Parameters p) :
         glfwWindowHint(GLFW_BLUE_BITS, mode->blueBits);
         glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
 
-        window = glfwCreateWindow(mode->width, mode->height, APPLICATION_NAME, monitor, nullptr);
+        _window = glfwCreateWindow(mode->width, mode->height, APPLICATION_NAME, monitor, nullptr);
     }
     else
     {
-        window = glfwCreateWindow(p.Width, p.Height, APPLICATION_NAME, nullptr, nullptr);
+        _window = glfwCreateWindow(p.Width, p.Height, APPLICATION_NAME, nullptr, nullptr);
     }
 
-    if (window == nullptr)
+    if (_window == nullptr)
     {
         glfwTerminate();
         throw std::runtime_error("Failed to create a window with GLFW");
     }
 
-    glfwMakeContextCurrent(window);
+    glfwMakeContextCurrent(_window);
     glfwSwapInterval(1);
 
     fmt::print("Vendor: {0}\n", glGetString(GL_VENDOR));
     fmt::print("Renderer: {0}\n", glGetString(GL_RENDERER));
     fmt::print("Version: {0}\n", glGetString(GL_VERSION));
 
-    glfwSetKeyCallback(window, [](auto window, auto key, auto scancode, auto action, auto mods)
-    {
-        if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-        {
-            glfwSetWindowShouldClose(window, GL_TRUE);
-        }
-    });
+    glfwSetWindowSizeCallback(_window, InternalWindowSizeCallback);
+    glfwSetMouseButtonCallback(_window, InternalMouseButtonCallback);
+    glfwSetKeyCallback(_window, InternalKeyCallback);
 
+}
+
+Sandbox::~Sandbox()
+{
+    glfwTerminate();
+}
+
+void Sandbox::run() const
+{
     while (true)
     {
-        if (glfwWindowShouldClose(window))
+        if (glfwWindowShouldClose(_window))
         {
             break;
         }
@@ -83,12 +100,54 @@ Sandbox::Sandbox(Parameters p) :
         glfwPollEvents();
     }
 
-    glfwDestroyWindow(window);
+    glfwDestroyWindow(_window);
 }
 
-Sandbox::~Sandbox()
+void Sandbox::setWindowSizeCallback(std::function<void(int, int)> callback)
 {
-    glfwTerminate();
+    sWindowSizeCallbackMap[_window] = callback;
+}
+
+void Sandbox::setKeyCallback(std::function<void(int, int, int, int)> callback)
+{
+    sKeyCallbackMap[_window] = callback;
+}
+
+void Sandbox::setMouseButtonCallback(std::function<void(int, int, int)> callback)
+{
+    sMouseButtonCallbackMap[_window] = callback;
+}
+
+void Sandbox::stop() const
+{
+    glfwSetWindowShouldClose(_window, GL_TRUE);
+}
+
+void InternalWindowSizeCallback(GLFWwindow* window, int width, int height)
+{
+    if (auto itr = sWindowSizeCallbackMap.find(window);
+    itr != sWindowSizeCallbackMap.end())
+    {
+        itr->second(width, height);
+    }
+};
+
+void InternalKeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+    if (auto itr = sKeyCallbackMap.find(window);
+    itr != sKeyCallbackMap.end())
+    {
+        itr->second(key, scancode, action, mods);
+    }
+}
+
+void InternalMouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
+{
+    if (auto itr = sMouseButtonCallbackMap.find(window);
+    itr != sMouseButtonCallbackMap.end())
+    {
+        itr->second(button, action, mods);
+    }
 }
 
 }
