@@ -125,8 +125,7 @@ void Sandbox::stop() const
 
 void InternalWindowSizeCallback(GLFWwindow* window, int width, int height)
 {
-    if (auto itr = sWindowSizeCallbackMap.find(window);
-    itr != sWindowSizeCallbackMap.end())
+    if (auto itr = sWindowSizeCallbackMap.find(window); itr != sWindowSizeCallbackMap.end())
     {
         itr->second(width, height);
     }
@@ -134,8 +133,7 @@ void InternalWindowSizeCallback(GLFWwindow* window, int width, int height)
 
 void InternalKeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-    if (auto itr = sKeyCallbackMap.find(window);
-    itr != sKeyCallbackMap.end())
+    if (auto itr = sKeyCallbackMap.find(window); itr != sKeyCallbackMap.end())
     {
         itr->second(key, scancode, action, mods);
     }
@@ -143,8 +141,7 @@ void InternalKeyCallback(GLFWwindow* window, int key, int scancode, int action, 
 
 void InternalMouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
 {
-    if (auto itr = sMouseButtonCallbackMap.find(window);
-    itr != sMouseButtonCallbackMap.end())
+    if (auto itr = sMouseButtonCallbackMap.find(window); itr != sMouseButtonCallbackMap.end())
     {
         itr->second(button, action, mods);
     }
