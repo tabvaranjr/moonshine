@@ -37,50 +37,64 @@ Sandbox::Sandbox(Parameters p) :
         throw std::runtime_error("Failed to initialize GLFW");
     }
 
-    if (p.IsDebugModeActive)
+    try
     {
-        glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
+        if (p.IsDebugModeActive)
+        {
+            glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GL_TRUE);
+        }
+
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+        glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+        if (p.IsFullScreen)
+        {
+            auto monitor = glfwGetPrimaryMonitor();
+            auto mode = glfwGetVideoMode(monitor);
+
+            glfwWindowHint(GLFW_RED_BITS, mode->redBits);
+            glfwWindowHint(GLFW_GREEN_BITS, mode->greenBits);
+            glfwWindowHint(GLFW_BLUE_BITS, mode->blueBits);
+            glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
+
+            _window = glfwCreateWindow(mode->width, mode->height, APPLICATION_NAME, monitor, nullptr);
+        }
+        else
+        {
+            _window = glfwCreateWindow(p.Width, p.Height, APPLICATION_NAME, nullptr, nullptr);
+        }
+
+        if (_window == nullptr)
+        {
+            throw std::runtime_error("Failed to create a window with GLFW");
+        }
+
+        glfwMakeContextCurrent(_window);
+        glfwSwapInterval(1);
+
+        if (epoxy_gl_version() < 40)
+        {
+            throw std::runtime_error("OpenGL 4.0 or later is required to use the sandbox.");
+        }
+
+        glfwSetWindowSizeCallback(_window, InternalWindowSizeCallback);
+        glfwSetMouseButtonCallback(_window, InternalMouseButtonCallback);
+        glfwSetKeyCallback(_window, InternalKeyCallback);
     }
-
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-    if (p.IsFullScreen)
-    {
-        auto monitor = glfwGetPrimaryMonitor();
-        auto mode = glfwGetVideoMode(monitor);
-
-        glfwWindowHint(GLFW_RED_BITS, mode->redBits);
-        glfwWindowHint(GLFW_GREEN_BITS, mode->greenBits);
-        glfwWindowHint(GLFW_BLUE_BITS, mode->blueBits);
-        glfwWindowHint(GLFW_REFRESH_RATE, mode->refreshRate);
-
-        _window = glfwCreateWindow(mode->width, mode->height, APPLICATION_NAME, monitor, nullptr);
-    }
-    else
-    {
-        _window = glfwCreateWindow(p.Width, p.Height, APPLICATION_NAME, nullptr, nullptr);
-    }
-
-    if (_window == nullptr)
+    catch (...)
     {
         glfwTerminate();
-        throw std::runtime_error("Failed to create a window with GLFW");
+        throw;
     }
+}
 
-    glfwMakeContextCurrent(_window);
-    glfwSwapInterval(1);
-
+void Sandbox::printRendererInformation() const
+{
     fmt::print("Vendor: {0}\n", glGetString(GL_VENDOR));
     fmt::print("Renderer: {0}\n", glGetString(GL_RENDERER));
     fmt::print("Version: {0}\n", glGetString(GL_VERSION));
-
-    glfwSetWindowSizeCallback(_window, InternalWindowSizeCallback);
-    glfwSetMouseButtonCallback(_window, InternalMouseButtonCallback);
-    glfwSetKeyCallback(_window, InternalKeyCallback);
-
 }
 
 Sandbox::~Sandbox()

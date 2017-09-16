@@ -33,6 +33,8 @@ public:
 
     void setMouseButtonCallback(std::function<void(int, int, int)> callback);
 
+    void printRendererInformation() const;
+
 private:
     GLFWwindow* _window;
 };
