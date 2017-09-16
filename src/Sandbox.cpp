@@ -74,9 +74,9 @@ Sandbox::Sandbox(Parameters p) :
         glfwMakeContextCurrent(_window);
         glfwSwapInterval(1);
 
-        if (epoxy_gl_version() < 40)
+        if (epoxy_gl_version() < 45 || !epoxy_has_gl_extension("GL_ARB_direct_state_access"))
         {
-            throw std::runtime_error("OpenGL 4.0 or later is required to use the sandbox.");
+            throw std::runtime_error("OpenGL 4.5 or the GL_ARB_direct_state_access extension is required to use the sandbox.");
         }
 
         glfwSetWindowSizeCallback(_window, InternalWindowSizeCallback);
