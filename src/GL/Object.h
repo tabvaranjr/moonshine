@@ -1,19 +1,21 @@
 #ifndef MOONSHINE_GL_OBJECT_H
 #define MOONSHINE_GL_OBJECT_H
 
+#include <cstdint>
+
 namespace Moonshine::GL
 {
 
 class Object
 {
 public:
-    constexpr auto GetId() const
+    constexpr auto id() const
     {
         return _id;
     }
 
 protected:
-    unsigned int _id;
+    std::uint32_t _id;
 };
 
 }
