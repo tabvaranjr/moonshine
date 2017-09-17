@@ -82,6 +82,25 @@ Sandbox::Sandbox(Parameters p) :
         glfwSetWindowSizeCallback(_window, InternalWindowSizeCallback);
         glfwSetMouseButtonCallback(_window, InternalMouseButtonCallback);
         glfwSetKeyCallback(_window, InternalKeyCallback);
+
+        if (p.IsDebugModeActive)
+        {
+            if (epoxy_has_gl_extension("GL_KHR_debug"))
+            {
+                auto glDebugCallback = [](GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length,
+                                          const GLchar* message, const GLvoid* userParam)
+                {
+                    fmt::print("Error {0:#x}: {1}\n", id, message);
+                };
+
+                glDebugMessageCallback(glDebugCallback, nullptr);
+                glEnable(GL_DEBUG_OUTPUT);
+            }
+            else
+            {
+                fmt::print("Missing GL_KHR_debug extension support for debug output\n");
+            }
+        }
     }
     catch (...)
     {
