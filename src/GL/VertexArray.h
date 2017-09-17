@@ -10,6 +10,7 @@ class Buffer;
 
 class VertexArray : public Object
 {
+public:
     enum class Type : std::uint32_t
     {
         Byte = 0x1400,

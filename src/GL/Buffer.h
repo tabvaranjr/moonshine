@@ -9,6 +9,8 @@ namespace Moonshine::GL
 
 class Buffer : public Object
 {
+public:
+
     enum class Target : std::uint32_t
     {
         Array = 0x8892,
@@ -54,7 +56,7 @@ class Buffer : public Object
     void setData(void* data, std::uintptr_t size, Usage usage);
 
     template<typename T>
-    constexpr void setData(const std::vector<T>& data, Usage usage)
+    void setData(const std::vector<T>& data, Usage usage)
     {
         setData(data.data(), data.size() * sizeof(T), usage);
     }

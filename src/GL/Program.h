@@ -11,6 +11,7 @@ class Shader;
 
 class Program : public Object
 {
+public:
     Program();
 
     ~Program();

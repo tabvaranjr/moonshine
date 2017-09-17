@@ -9,6 +9,7 @@ namespace Moonshine::GL
 
 class Shader : public Object
 {
+public:
     enum class Type : std::uint32_t
     {
         Vertex = 0x8B31,
