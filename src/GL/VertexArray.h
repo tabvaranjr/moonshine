@@ -19,6 +19,7 @@ public:
         UnsignedShort = 0x1403,
         Int = 0x1404,
         UnsignedInt = 0x1405,
+        Float = 0x1406,
         Double = 0x140A,
         HalfFloat = 0x140B,
         Fixed = 0x140C
@@ -26,6 +27,8 @@ public:
 
     VertexArray();
     ~VertexArray();
+
+    void bind();
 
     void bindBuffer(std::uint32_t index, const Buffer& buffer, std::intptr_t offset = 0, std::intptr_t stride = 0);
 
