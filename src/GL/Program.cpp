@@ -37,12 +37,12 @@ bool Program::status() const
 
 std::string Program::infoLog() const
 {
-    auto logLength = 0;
-    glGetProgramiv(_id, GL_INFO_LOG_LENGTH, &logLength);
+    auto length = 0;
+    glGetProgramiv(_id, GL_INFO_LOG_LENGTH, &length);
 
     std::string log;
-    log.reserve(logLength);
-    glGetProgramInfoLog(_id, logLength, nullptr, &log[0]);
+    log.resize(length);
+    glGetProgramInfoLog(_id, length, nullptr, &log[0]);
 
     return log;
 }

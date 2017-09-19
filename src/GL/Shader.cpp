@@ -37,12 +37,12 @@ bool Shader::status() const
 
 std::string Shader::infoLog() const
 {
-    auto logLength = 0;
-    glGetShaderiv(_id, GL_INFO_LOG_LENGTH, &logLength);
+    auto length = 0;
+    glGetShaderiv(_id, GL_INFO_LOG_LENGTH, &length);
 
     std::string log;
-    log.reserve(logLength);
-    glGetShaderInfoLog(_id, logLength, nullptr, &log[0]);
+    log.resize(length);
+    glGetShaderInfoLog(_id, length, nullptr, &log[0]);
 
     return log;
 }
