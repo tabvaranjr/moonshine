@@ -60,8 +60,6 @@ public:
     {
         setData(data.data(), data.size() * sizeof(T), usage);
     }
-
-    void* map(Target target, Access access);
 };
 
 }
