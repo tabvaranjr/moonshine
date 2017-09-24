@@ -6,6 +6,7 @@
 #include <stdexcept>
 
 #include <map>
+#include "TestObject.h"
 
 namespace Moonshine
 {
@@ -95,6 +96,8 @@ Sandbox::Sandbox(Parameters p) :
 
                 glDebugMessageCallback(glDebugCallback, nullptr);
                 glEnable(GL_DEBUG_OUTPUT);
+                glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+                glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, GL_TRUE);
             }
             else
             {
@@ -118,11 +121,14 @@ void Sandbox::printRendererInformation() const
 
 Sandbox::~Sandbox()
 {
+    glfwDestroyWindow(_window);
     glfwTerminate();
 }
 
 void Sandbox::run() const
 {
+    TestObject tobj;
+
     while (true)
     {
         if (glfwWindowShouldClose(_window))
@@ -131,9 +137,11 @@ void Sandbox::run() const
         }
 
         glfwPollEvents();
-    }
 
-    glfwDestroyWindow(_window);
+        tobj.render();
+
+        glfwSwapBuffers(_window);
+    }
 }
 
 void Sandbox::setWindowSizeCallback(std::function<void(int, int)> callback)
