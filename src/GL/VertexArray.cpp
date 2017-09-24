@@ -22,7 +22,7 @@ void VertexArray::bind()
     glBindVertexArray(_id);
 }
 
-void VertexArray::bindBuffer(std::uint32_t index, const Buffer& buffer, std::intptr_t offset, std::intptr_t stride)
+void VertexArray::bindBuffer(std::uint32_t index, const Buffer& buffer, std::intptr_t offset, std::uint32_t stride)
 {
     glVertexArrayVertexBuffer(_id, index, buffer.id(), offset, stride);
 }

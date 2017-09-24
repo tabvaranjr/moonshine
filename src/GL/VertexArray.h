@@ -30,7 +30,7 @@ public:
 
     void bind();
 
-    void bindBuffer(std::uint32_t index, const Buffer& buffer, std::intptr_t offset = 0, std::intptr_t stride = 0);
+    void bindBuffer(std::uint32_t index, const Buffer& buffer, std::intptr_t offset = 0, std::uint32_t stride = 0);
 
     void setAttribFormat(std::uint32_t index, std::int32_t size, Type type, bool normalized = false, std::uint32_t relativeoffset = 0);
     void setAttribIFormat(std::uint32_t index, std::int32_t size, Type type, bool normalized = false, std::uint32_t relativeoffset = 0);
