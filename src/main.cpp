@@ -1,5 +1,7 @@
 #include "Sandbox.h"
 
+#include "TestObject.h"
+
 #include <epoxy/gl.h>
 #include <stdexcept>
 #include <fmt/format.h>
@@ -27,7 +29,22 @@ int main(int argc, char* argv[])
 
         box.setWindowSizeCallback(windowSizeCallback);
         box.setKeyCallback(keyCallback);
-        box.run();
+
+        Moonshine::TestObject testobj;
+
+        while (true)
+        {
+            if (box.isStopping())
+            {
+                break;
+            }
+
+            box.poolEvents();
+
+            testobj.render();
+
+            box.swapBuffers();
+        }
     }
     catch (std::exception& e)
     {

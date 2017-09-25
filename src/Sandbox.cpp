@@ -6,7 +6,6 @@
 #include <stdexcept>
 
 #include <map>
-#include "TestObject.h"
 
 namespace Moonshine
 {
@@ -125,25 +124,6 @@ Sandbox::~Sandbox()
     glfwTerminate();
 }
 
-void Sandbox::run() const
-{
-    TestObject tobj;
-
-    while (true)
-    {
-        if (glfwWindowShouldClose(_window))
-        {
-            break;
-        }
-
-        glfwPollEvents();
-
-        tobj.render();
-
-        glfwSwapBuffers(_window);
-    }
-}
-
 void Sandbox::setWindowSizeCallback(std::function<void(int, int)> callback)
 {
     sWindowSizeCallbackMap[_window] = callback;
@@ -162,6 +142,21 @@ void Sandbox::setMouseButtonCallback(std::function<void(int, int, int)> callback
 void Sandbox::stop() const
 {
     glfwSetWindowShouldClose(_window, GL_TRUE);
+}
+
+void Sandbox::swapBuffers() const
+{
+    glfwSwapBuffers(_window);
+}
+
+void Sandbox::poolEvents() const
+{
+    glfwPollEvents();
+}
+
+bool Sandbox::isStopping() const
+{
+    return glfwWindowShouldClose(_window);
 }
 
 void InternalWindowSizeCallback(GLFWwindow* window, int width, int height)

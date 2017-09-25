@@ -23,7 +23,11 @@ public:
     explicit Sandbox(Parameters p);
     ~Sandbox();
 
-    void run() const;
+    void poolEvents() const;
+
+    void swapBuffers() const;
+
+    bool isStopping() const;
 
     void stop() const;
 
