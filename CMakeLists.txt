@@ -2,12 +2,6 @@ cmake_minimum_required(VERSION 3.8)
 project(moonshine)
 
 #
-# Options
-#
-option(USE_EXTERNAL_GLFW "Use the version of GLFW found in the 'external' directory" OFF)
-option(USE_EXTERNAL_FMT "Use the version of FMT found in the 'external' directory" OFF)
-
-#
 # Modules
 #
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules/")
@@ -42,4 +36,4 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 set(SOURCE_FILES src/main.cpp src/Sandbox.cpp src/Sandbox.h src/File.cpp src/File.h src/GL/Object.h src/GL/Shader.cpp src/GL/Shader.h src/GL/Program.cpp src/GL/Program.h src/GL/VertexArray.cpp src/GL/VertexArray.h src/GL/Buffer.cpp src/GL/Buffer.h src/Helpers.h src/TestObject.cpp src/TestObject.h src/GL/ForwardDeclarations.h)
 add_executable(moonshine ${SOURCE_FILES})
-target_link_libraries(moonshine ${GLFW_LIBRARIES} ${OPENGL_LIBRARIES} ${LibEpoxy_LIBRARIES})
+target_link_libraries(moonshine ${GLFW_LIBRARIES} ${GLFW_LIBRARY} ${OPENGL_LIBRARIES} ${LibEpoxy_LIBRARIES})
