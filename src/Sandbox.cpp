@@ -1,10 +1,10 @@
 #include "Sandbox.h"
 
-#include <epoxy/gl.h>
+#include "glad/glad.h"
+
 #include <GLFW/glfw3.h>
 #include <fmt/format.h>
 #include <stdexcept>
-
 #include <map>
 
 namespace Moonshine
@@ -74,9 +74,14 @@ Sandbox::Sandbox(Parameters p) :
         glfwMakeContextCurrent(_window);
         glfwSwapInterval(1);
 
-        if (epoxy_gl_version() < 45 || !epoxy_has_gl_extension("GL_ARB_direct_state_access"))
+        if (!gladLoadGL())
         {
-            throw std::runtime_error("OpenGL 4.5 or the GL_ARB_direct_state_access extension is required to use the sandbox.");
+            throw std::runtime_error("Could not load GL loader.");
+        }
+
+        if (!GLAD_GL_VERSION_4_5)
+        {
+            throw std::runtime_error("OpenGL 4.5 or later is required to use the sandbox.");
         }
 
         glfwSetWindowSizeCallback(_window, InternalWindowSizeCallback);
@@ -85,23 +90,16 @@ Sandbox::Sandbox(Parameters p) :
 
         if (p.IsDebugModeActive)
         {
-            if (epoxy_has_gl_extension("GL_KHR_debug"))
+            auto glDebugCallback = [](GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length,
+                                      const GLchar* message, const GLvoid* userParam)
             {
-                auto glDebugCallback = [](GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length,
-                                          const GLchar* message, const GLvoid* userParam)
-                {
-                    fmt::print("Error {0:#x}: {1}\n", id, message);
-                };
+                fmt::print("Error {0:#x}: {1}\n", id, message);
+            };
 
-                glDebugMessageCallback(glDebugCallback, nullptr);
-                glEnable(GL_DEBUG_OUTPUT);
-                glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
-                glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, GL_TRUE);
-            }
-            else
-            {
-                fmt::print("Missing GL_KHR_debug extension support for debug output\n");
-            }
+            glDebugMessageCallback(glDebugCallback, nullptr);
+            glEnable(GL_DEBUG_OUTPUT);
+            glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+            glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, GL_TRUE);
         }
     }
     catch (...)

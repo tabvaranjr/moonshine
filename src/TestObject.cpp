@@ -1,5 +1,7 @@
 #include "TestObject.h"
 
+#include "glad/glad.h"
+
 #include "GL/Buffer.h"
 #include "GL/VertexArray.h"
 #include "GL/Shader.h"
@@ -7,8 +9,6 @@
 
 #include <vector>
 #include <array>
-
-#include <epoxy/gl.h>
 #include <fmt/format.h>
 
 using vec3 = std::array<float, 3>;

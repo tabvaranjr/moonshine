@@ -1,7 +1,8 @@
 #include "Program.h"
 
 #include "Shader.h"
-#include <epoxy/gl.h>
+#include "glad/glad.h"
+
 #include <cassert>
 
 namespace Moonshine::GL

@@ -2,7 +2,7 @@
 
 #include "../Helpers.h"
 #include "Buffer.h"
-#include <epoxy/gl.h>
+#include "glad/glad.h"
 
 namespace Moonshine::GL
 {

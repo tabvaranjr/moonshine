@@ -2,7 +2,8 @@
 
 #include "TestObject.h"
 
-#include <epoxy/gl.h>
+#include "glad/glad.h"
+
 #include <stdexcept>
 #include <fmt/format.h>
 
