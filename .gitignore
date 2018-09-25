@@ -40,3 +40,4 @@ cmake-build-*/
 .eclipse/
 .idea/
 .vs/
+CMakeSettings.json
