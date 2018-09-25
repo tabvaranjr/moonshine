@@ -12,22 +12,12 @@ set(GLAD_INCLUDE_DIR ${GLAD_DIR}/include)
 set(GLAD_SRC ${GLAD_INCLUDE_DIR}/glad/glad.h ${GLAD_DIR}/src/glad.c)
 include_directories(${GLAD_INCLUDE_DIR})
 
+set(OpenGL_GL_PREFERENCE GLVND)
 find_package(OpenGL REQUIRED)
-include_directories(${OPENGL_INCLUDE_DIR})
 
-if(USE_EXTERNAL_GLFW)
-    message(STATUS "Using external GLFW")
-    add_subdirectory(external/glfw)
-else()
-    find_package(GLFW REQUIRED)
-endif()
+find_package(GLFW REQUIRED)
 
-if(USE_EXTERNAL_FMT)
-    message(STATUS "Using external fmt")
-    add_subdirectory(external/fmt)
-else()
-    find_package(Fmt REQUIRED)
-endif()
+find_package(Fmt REQUIRED)
 add_definitions("-DFMT_HEADER_ONLY")
 
 #
@@ -39,4 +29,4 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 set(SOURCE_FILES src/main.cpp src/Sandbox.cpp src/Sandbox.h src/File.cpp src/File.h src/GL/Object.h src/GL/Shader.cpp src/GL/Shader.h src/GL/Program.cpp src/GL/Program.h src/GL/VertexArray.cpp src/GL/VertexArray.h src/GL/Buffer.cpp src/GL/Buffer.h src/Helpers.h src/TestObject.cpp src/TestObject.h src/GL/ForwardDeclarations.h)
 add_executable(moonshine ${SOURCE_FILES} ${GLAD_SRC})
-target_link_libraries(moonshine ${GLFW_LIBRARIES} ${GLFW_LIBRARY} ${OPENGL_LIBRARIES} ${CMAKE_DL_LIBS})
+target_link_libraries(moonshine PRIVATE ${GLFW_LIBRARIES} ${GLFW_LIBRARY} OpenGL::GL ${CMAKE_DL_LIBS})
