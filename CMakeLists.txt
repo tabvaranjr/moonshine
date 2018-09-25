@@ -4,7 +4,6 @@ project(moonshine)
 #
 # Modules
 #
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/modules/")
 
 # Set up the generated GLAD bindings
 set(GLAD_DIR ${CMAKE_CURRENT_SOURCE_DIR}/external/glad)
@@ -15,9 +14,9 @@ include_directories(${GLAD_INCLUDE_DIR})
 set(OpenGL_GL_PREFERENCE GLVND)
 find_package(OpenGL REQUIRED)
 
-find_package(GLFW REQUIRED)
+find_package(glfw3 CONFIG REQUIRED)
 
-find_package(Fmt REQUIRED)
+find_package(fmt CONFIG REQUIRED)
 add_definitions("-DFMT_HEADER_ONLY")
 
 #
@@ -29,4 +28,4 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 set(SOURCE_FILES src/main.cpp src/Sandbox.cpp src/Sandbox.h src/File.cpp src/File.h src/GL/Object.h src/GL/Shader.cpp src/GL/Shader.h src/GL/Program.cpp src/GL/Program.h src/GL/VertexArray.cpp src/GL/VertexArray.h src/GL/Buffer.cpp src/GL/Buffer.h src/Helpers.h src/TestObject.cpp src/TestObject.h src/GL/ForwardDeclarations.h)
 add_executable(moonshine ${SOURCE_FILES} ${GLAD_SRC})
-target_link_libraries(moonshine PRIVATE ${GLFW_LIBRARIES} ${GLFW_LIBRARY} OpenGL::GL ${CMAKE_DL_LIBS})
+target_link_libraries(moonshine PRIVATE glfw OpenGL::GL ${CMAKE_DL_LIBS})
