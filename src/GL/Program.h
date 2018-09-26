@@ -3,6 +3,7 @@
 
 #include "Object.h"
 #include <string>
+#include <initializer_list>
 
 namespace Moonshine::GL
 {
@@ -17,6 +18,7 @@ public:
     ~Program();
 
     void attach(const Shader& shader);
+    void attach(std::initializer_list<const Shader> list);
 
     void link();
 

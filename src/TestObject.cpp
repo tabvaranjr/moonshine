@@ -180,13 +180,11 @@ TestObject::TestObject() :
         spdlog::get("console")->error("Failed to compile fragment shader: {0}\n ", fs.infoLog());
     }
 
-    _prog->attach(vs);
-    _prog->attach(gs);
-    _prog->attach(fs);
+    _prog->attach({ vs, gs, fs });
     _prog->link();
     if (!_prog->status())
     {
-        fmt::print("Failed to link shader program: {0}", _prog->infoLog());
+        spdlog::get("console")->error("Failed to link shader program: {0}", _prog->infoLog());
     }
 }
 

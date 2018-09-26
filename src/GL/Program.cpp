@@ -23,6 +23,14 @@ void Program::attach(const Shader& shader)
     glAttachShader(_id, shader.id());
 }
 
+void Program::attach(std::initializer_list<const Shader> list)
+{
+    for ( const auto shader : list)
+    {
+        glAttachShader(_id, shader.id());
+    }
+}
+
 void Program::link()
 {
     glLinkProgram(_id);
