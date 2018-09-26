@@ -101,7 +101,25 @@ Sandbox::Sandbox(Parameters p) :
             auto glDebugCallback = [](GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length,
                                       const GLchar* message, const GLvoid* userParam)
             {
-                spdlog::get("console")->error("Error {0:#x}: {1}", id, message);
+                switch (severity)
+                {
+                    case GL_DEBUG_SEVERITY_HIGH:
+                        spdlog::get("console")->error("Error {0:#x}: {1}", id, message);
+                        break;
+
+                    case GL_DEBUG_SEVERITY_MEDIUM:
+                        spdlog::get("console")->warn("Error {0:#x}: {1}", id, message);
+                        break;
+
+                    case GL_DEBUG_SEVERITY_LOW:
+                        spdlog::get("console")->info("Error {0:#x}: {1}", id, message);
+                        break;
+
+                    case GL_DEBUG_SEVERITY_NOTIFICATION:
+                    default:
+                        spdlog::get("console")->debug("Error {0:#x}: {1}", id, message);
+                        break;
+                }
             };
 
             glDebugMessageCallback(glDebugCallback, nullptr);
