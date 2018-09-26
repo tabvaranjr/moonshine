@@ -9,7 +9,7 @@
 
 #include <vector>
 #include <array>
-#include <fmt/format.h>
+#include <spdlog/spdlog.h>
 
 using vec3 = std::array<float, 3>;
 using namespace Moonshine::GL;
@@ -161,7 +161,7 @@ TestObject::TestObject() :
     vs.compile();
     if (!vs.status())
     {
-        fmt::print("Failed to compile vertex shader: {0}\n", vs.infoLog());
+        spdlog::get("console")->error("Failed to compile vertex shader: {0}", vs.infoLog());
     }
 
     Shader gs(Shader::Type::Geometry);
@@ -169,7 +169,7 @@ TestObject::TestObject() :
     gs.compile();
     if (!gs.status())
     {
-        fmt::print("Failed to compile geometry shader: {0}\n", gs.infoLog());
+        spdlog::get("console")->error("Failed to compile geometry shader: {0}", gs.infoLog());
     }
 
     Shader fs(Shader::Type::Fragment);
@@ -177,7 +177,7 @@ TestObject::TestObject() :
     fs.compile();
     if (!fs.status())
     {
-        fmt::print("Failed to compile fragment shader: {0}\n ", fs.infoLog());
+        spdlog::get("console")->error("Failed to compile fragment shader: {0}\n ", fs.infoLog());
     }
 
     _prog->attach(vs);

@@ -19,6 +19,8 @@ find_package(glfw3 CONFIG REQUIRED)
 find_package(fmt CONFIG REQUIRED)
 add_definitions("-DFMT_HEADER_ONLY")
 
+find_package(spdlog CONFIG REQUIRED)
+
 #
 # The interesting booze!
 #
@@ -28,4 +30,4 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 set(SOURCE_FILES src/main.cpp src/Sandbox.cpp src/Sandbox.h src/File.cpp src/File.h src/GL/Object.h src/GL/Shader.cpp src/GL/Shader.h src/GL/Program.cpp src/GL/Program.h src/GL/VertexArray.cpp src/GL/VertexArray.h src/GL/Buffer.cpp src/GL/Buffer.h src/Helpers.h src/TestObject.cpp src/TestObject.h src/GL/ForwardDeclarations.h)
 add_executable(moonshine ${SOURCE_FILES} ${GLAD_SRC})
-target_link_libraries(moonshine PRIVATE glfw OpenGL::GL ${CMAKE_DL_LIBS})
+target_link_libraries(moonshine PRIVATE glfw OpenGL::GL spdlog::spdlog ${CMAKE_DL_LIBS})

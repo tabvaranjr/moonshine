@@ -4,19 +4,22 @@
 
 #include "glad/glad.h"
 
+#include <spdlog/spdlog.h>
+#include <spdlog/sinks/stdout_color_sinks.h>
 #include <stdexcept>
-#include <fmt/format.h>
 
 int main(int argc, char* argv[])
 {
+    auto console = spdlog::stdout_color_mt("console");
+    spdlog::set_level(spdlog::level::info);
+
     try
     {
         Moonshine::Sandbox box;
-        box.printRendererInformation();
 
         auto windowSizeCallback = [](int width, int height)
         {
-            fmt::print("{0}x{1}\n", width, height);
+            spdlog::get("console")->info("Viewport changed to {0}x{1}", width, height);
             glViewport(0, 0, width, height);
         };
 
@@ -49,7 +52,7 @@ int main(int argc, char* argv[])
     }
     catch (std::exception& e)
     {
-        fmt::print("(┛◉Д◉)┛彡┻━┻: {0}\n", e.what());
+        console->critical("(┛◉Д◉)┛彡┻━┻: {0}\n", e.what());
 
         return 1;
     }

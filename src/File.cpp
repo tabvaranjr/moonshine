@@ -20,7 +20,7 @@ std::string readTextFile(const std::string& filename)
     }
     else
     {
-        throw std::runtime_error(fmt::format("Failed to open {0} for reading.\n", filename));
+        throw std::runtime_error(fmt::format("Failed to open {0} for reading.", filename));
     }
 }
 

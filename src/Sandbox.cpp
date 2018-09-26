@@ -3,7 +3,7 @@
 #include "glad/glad.h"
 
 #include <GLFW/glfw3.h>
-#include <fmt/format.h>
+#include <spdlog/spdlog.h>
 #include <stdexcept>
 #include <map>
 
@@ -30,7 +30,11 @@ Sandbox::Sandbox() :
 Sandbox::Sandbox(Parameters p) :
         _window(nullptr)
 {
-    glfwSetErrorCallback([](auto error, auto description) { fmt::print("Error {0:#x}: {1}\n", error, description); } );
+    auto glfwErrorCallback = [](auto error, auto description)
+    {
+        spdlog::get("console")->error("Error {0:#x}: {1}", error, description);
+    };
+    glfwSetErrorCallback(glfwErrorCallback);
 
     if (!glfwInit())
     {
@@ -79,6 +83,10 @@ Sandbox::Sandbox(Parameters p) :
             throw std::runtime_error("Could not load GL loader.");
         }
 
+        spdlog::get("console")->info("Vendor: {0}", glGetString(GL_VENDOR));
+        spdlog::get("console")->info("Renderer: {0}", glGetString(GL_RENDERER));
+        spdlog::get("console")->info("Version: {0}", glGetString(GL_VERSION));
+
         if (!GLAD_GL_VERSION_4_5)
         {
             throw std::runtime_error("OpenGL 4.5 or later is required to use the sandbox.");
@@ -93,7 +101,7 @@ Sandbox::Sandbox(Parameters p) :
             auto glDebugCallback = [](GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length,
                                       const GLchar* message, const GLvoid* userParam)
             {
-                fmt::print("Error {0:#x}: {1}\n", id, message);
+                spdlog::get("console")->error("Error {0:#x}: {1}", id, message);
             };
 
             glDebugMessageCallback(glDebugCallback, nullptr);
@@ -107,13 +115,6 @@ Sandbox::Sandbox(Parameters p) :
         glfwTerminate();
         throw;
     }
-}
-
-void Sandbox::printRendererInformation() const
-{
-    fmt::print("Vendor: {0}\n", glGetString(GL_VENDOR));
-    fmt::print("Renderer: {0}\n", glGetString(GL_RENDERER));
-    fmt::print("Version: {0}\n", glGetString(GL_VERSION));
 }
 
 Sandbox::~Sandbox()
