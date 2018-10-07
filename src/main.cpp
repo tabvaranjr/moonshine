@@ -7,6 +7,10 @@
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <stdexcept>
 #include <memory>
+#include <imgui.h>
+#include "imgui_impl_opengl3.h"
+#include "imgui_impl_glfw.h"
+
 
 int main(int argc, char* argv[])
 {
@@ -27,7 +31,16 @@ int main(int argc, char* argv[])
 
             box->poolEvents();
 
+            // Start the Dear ImGui frame
+            ImGui_ImplOpenGL3_NewFrame();
+            ImGui_ImplGlfw_NewFrame();
+            ImGui::NewFrame();
+
+
             entity->render();
+
+            ImGui::Render();
+            ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
             box->swapBuffers();
         }

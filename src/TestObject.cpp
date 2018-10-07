@@ -10,6 +10,7 @@
 #include <vector>
 #include <array>
 #include <spdlog/spdlog.h>
+#include <imgui.h>
 
 using vec3 = std::array<float, 3>;
 using namespace Moonshine::GL;
@@ -192,15 +193,19 @@ TestObject::~TestObject() = default;
 
 void TestObject::update()
 {
-
 }
 
 void TestObject::render()
 {
-    const std::array<float, 4> bgcolor = { 0.05f, 0.05f, 0.05f, 1.0f };
+    ImGui::Begin("TestObject");
+    ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+    ImGui::ColorEdit3("clear color", (float*)&_bgcolor);
+    ImGui::End();
+
     const float depth = 1.0f;
 
-    glClearNamedFramebufferfv(0, GL_COLOR, 0, bgcolor.data());
+
+    glClearNamedFramebufferfv(0, GL_COLOR, 0, _bgcolor.data());
     glClearNamedFramebufferfv(0, GL_DEPTH, 0, &depth);
 
     _prog->use();

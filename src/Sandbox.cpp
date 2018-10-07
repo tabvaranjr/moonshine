@@ -7,6 +7,10 @@
 #include <stdexcept>
 #include <map>
 
+#include <imgui.h>
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
+
 namespace Moonshine
 {
 
@@ -127,6 +131,17 @@ Sandbox::Sandbox(Parameters p) :
             glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
             glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, GL_TRUE);
         }
+
+        // Setup Dear ImGui binding
+        IMGUI_CHECKVERSION();
+        ImGui::CreateContext();
+        ImGuiIO& io = ImGui::GetIO();
+
+        ImGui_ImplGlfw_InitForOpenGL(_window, true);
+        ImGui_ImplOpenGL3_Init("#version 150");
+
+        // Setup style
+        ImGui::StyleColorsDark();
     }
     catch (...)
     {
@@ -137,6 +152,10 @@ Sandbox::Sandbox(Parameters p) :
 
 Sandbox::~Sandbox()
 {
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
+
     glfwDestroyWindow(_window);
     glfwTerminate();
 }

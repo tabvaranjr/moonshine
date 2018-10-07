@@ -6,6 +6,7 @@
 
 #include <memory>
 #include <vector>
+#include <array>
 
 namespace Moonshine
 {
@@ -23,6 +24,7 @@ private:
     std::shared_ptr<GL::VertexArray> _vao;
     std::vector<std::shared_ptr<GL::Buffer>> _bufs;
     std::shared_ptr<GL::Program> _prog;
+    std::array<float, 4> _bgcolor = { 0.05f, 0.05f, 0.05f, 1.0f };
 };
 
 }
