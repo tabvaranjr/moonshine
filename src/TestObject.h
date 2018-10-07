@@ -1,20 +1,23 @@
 #ifndef MOONSHINE_TESTOBJECT_H
 #define MOONSHINE_TESTOBJECT_H
 
+#include "Entity.h"
 #include "GL/ForwardDeclarations.h"
+
 #include <memory>
 #include <vector>
 
 namespace Moonshine
 {
 
-class TestObject
+class TestObject : public Entity
 {
 public:
     TestObject();
     ~TestObject();
 
-    void render();
+    virtual void update() override;
+    virtual void render() override;
 
 private:
     std::shared_ptr<GL::VertexArray> _vao;

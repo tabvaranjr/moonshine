@@ -1,10 +1,12 @@
 #include "Sandbox.h"
 
 #include "TestObject.h"
+#include "Entity.h"
 
 #include <spdlog/spdlog.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <stdexcept>
+#include <memory>
 
 int main(int argc, char* argv[])
 {
@@ -13,21 +15,21 @@ int main(int argc, char* argv[])
 
     try
     {
-        Moonshine::Sandbox box;
-        Moonshine::TestObject testobj;
+        auto box = std::make_shared<Moonshine::Sandbox>();
+        auto entity = std::make_shared<Moonshine::TestObject>();
 
         while (true)
         {
-            if (box.isStopping())
+            if (box->isStopping())
             {
                 break;
             }
 
-            box.poolEvents();
+            box->poolEvents();
 
-            testobj.render();
+            entity->render();
 
-            box.swapBuffers();
+            box->swapBuffers();
         }
     }
     catch (std::exception& e)

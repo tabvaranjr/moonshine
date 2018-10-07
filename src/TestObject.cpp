@@ -190,6 +190,11 @@ TestObject::TestObject() :
 
 TestObject::~TestObject() = default;
 
+void TestObject::update()
+{
+
+}
+
 void TestObject::render()
 {
     const std::array<float, 4> bgcolor = { 0.05f, 0.05f, 0.05f, 1.0f };
