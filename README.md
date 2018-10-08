@@ -11,6 +11,7 @@ Actually, it's quite intoxicating at the moment; there are better sandboxes out 
 * [fmt](http://fmtlib.net/) (version 3.0 or later)
 * [spdlog](https://github.com/gabime/spdlog) (version 1.1.0 or later)
 * [Dear ImGui](https://github.com/ocornut/imgui) (version 1.65 or later)
+* [Catch2](https://github.com/catchorg/Catch2) (version 2.1 or later)
 
 ## Build instructions
 ### Linux
