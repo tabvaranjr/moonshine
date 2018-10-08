@@ -186,17 +186,29 @@ void Sandbox::stop() const
 
 void Sandbox::swapBuffers() const
 {
+    ImGui::Render();
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
     glfwSwapBuffers(_window);
 }
 
-void Sandbox::poolEvents() const
+void Sandbox::poolEvents()
 {
     glfwPollEvents();
+    startUpdate();
 }
 
 bool Sandbox::isStopping() const
 {
     return glfwWindowShouldClose(_window);
+}
+
+void Sandbox::startUpdate()
+{
+    // Start the Dear ImGui frame
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplGlfw_NewFrame();
+    ImGui::NewFrame();
 }
 
 void InternalWindowSizeCallback(GLFWwindow* window, int width, int height)

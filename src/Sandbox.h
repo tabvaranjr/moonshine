@@ -23,7 +23,7 @@ public:
     explicit Sandbox(Parameters p);
     ~Sandbox();
 
-    void poolEvents() const;
+    void poolEvents();
 
     void swapBuffers() const;
 
@@ -39,6 +39,8 @@ public:
 
 private:
     GLFWwindow* _window;
+
+    void startUpdate();
 };
 
 }

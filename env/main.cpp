@@ -7,10 +7,6 @@
 #include <stdexcept>
 #include <memory>
 #include <fmt/format.h>
-#include <imgui.h>
-#include "imgui_impl_opengl3.h"
-#include "imgui_impl_glfw.h"
-
 
 int main(int argc, char* argv[])
 {
@@ -21,25 +17,16 @@ int main(int argc, char* argv[])
         auto box = std::make_shared<Moonshine::Sandbox>();
         auto entity = std::make_shared<Moonshine::TestObject>();
 
-        while (true)
+        while (!box->isStopping())
         {
-            if (box->isStopping())
-            {
-                break;
-            }
-
+            // Process input.
             box->poolEvents();
 
-            // Start the Dear ImGui frame
-            ImGui_ImplOpenGL3_NewFrame();
-            ImGui_ImplGlfw_NewFrame();
-            ImGui::NewFrame();
+            // Update.
+            entity->update();
 
-
+            // Render.
             entity->render();
-
-            ImGui::Render();
-            ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
             box->swapBuffers();
         }
