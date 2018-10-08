@@ -36,8 +36,6 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 set(SOURCE_FILES
     src/Sandbox.cpp
     src/Sandbox.h
-    src/File.cpp
-    src/File.h
     src/GL/Object.h
     src/GL/Shader.cpp
     src/GL/Shader.h
