@@ -3,11 +3,13 @@
 #include "glad/glad.h"
 
 #include <GLFW/glfw3.h>
+#include <imgui.h>
 #include <spdlog/spdlog.h>
+#include <spdlog/sinks/stdout_color_sinks.h>
+
 #include <stdexcept>
 #include <map>
 
-#include <imgui.h>
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 
@@ -34,6 +36,8 @@ Sandbox::Sandbox() :
 Sandbox::Sandbox(Parameters p) :
         _window(nullptr)
 {
+    auto console = spdlog::stdout_color_mt("console");
+
     auto glfwErrorCallback = [](auto error, auto description)
     {
         spdlog::get("console")->error("Error {0:#x}: {1}", error, description);
