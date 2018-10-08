@@ -6,6 +6,7 @@
 #include <spdlog/spdlog.h>
 #include <stdexcept>
 #include <memory>
+#include <fmt/format.h>
 #include <imgui.h>
 #include "imgui_impl_opengl3.h"
 #include "imgui_impl_glfw.h"
@@ -13,7 +14,6 @@
 
 int main(int argc, char* argv[])
 {
-    auto console = spdlog::stdout_color_mt("console");
     spdlog::set_level(spdlog::level::info);
 
     try
@@ -46,7 +46,7 @@ int main(int argc, char* argv[])
     }
     catch (std::exception& e)
     {
-        console->critical(u8"(┛◉Д◉)┛彡┻━┻: {0}\n", e.what());
+        fmt::format(u8"(┛◉Д◉)┛彡┻━┻: {0}\n", e.what());
 
         return 1;
     }
