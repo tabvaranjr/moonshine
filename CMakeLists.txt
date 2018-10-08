@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.8)
 project(moonshine)
 
+add_subdirectory(env)
 add_subdirectory(tests)
 
 #
@@ -33,7 +34,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED YES)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 set(SOURCE_FILES
-    src/main.cpp
     src/Sandbox.cpp
     src/Sandbox.h
     src/File.cpp
@@ -57,5 +57,5 @@ set(SOURCE_FILES
     src/imgui_impl_glfw.cpp
     src/imgui_impl_glfw.h
     )
-add_executable(moonshine ${SOURCE_FILES} ${GLAD_SRC})
+add_library(moonshine ${SOURCE_FILES} ${GLAD_SRC})
 target_link_libraries(moonshine PRIVATE glfw OpenGL::GL spdlog::spdlog imgui::imgui ${CMAKE_DL_LIBS})
